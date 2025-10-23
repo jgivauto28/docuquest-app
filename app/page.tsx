@@ -33,8 +33,7 @@ export default function Home() {
   const [errors, setErrors] = useState<Partial<FormData>>({});
   
   const clientDropdownRef = useRef<HTMLDivElement>(null);
-  const searchTimeoutRef = useRef<NodeJS.Timeout>();
-
+  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   // Debounced client search
   useEffect(() => {
     if (searchTimeoutRef.current) {
