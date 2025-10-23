@@ -16,6 +16,12 @@ interface FormData {
   urgency: string;
   request: string;
 }
+interface FormErrors {
+  employee?: string;
+  client?: string;
+  urgency?: string;
+  request?: string;
+}
 
 export default function Home() {
   const [formData, setFormData] = useState<FormData>({
@@ -30,7 +36,7 @@ export default function Home() {
   const [showClientDropdown, setShowClientDropdown] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [errors, setErrors] = useState<Partial<FormData>>({});
+  const [errors, setErrors] = useState<FormErrors>({});
   
   const clientDropdownRef = useRef<HTMLDivElement>(null);
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -95,7 +101,7 @@ export default function Home() {
     e.preventDefault();
     
     // Validation
-    const newErrors: Partial<FormData> = {};
+    const newErrors: FormErrors = {};
     if (!formData.employee) newErrors.employee = 'Employee is required';
     if (!formData.client) newErrors.client = 'Client is required';
     if (!formData.urgency) newErrors.urgency = 'Urgency is required';
