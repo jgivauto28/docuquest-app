@@ -186,7 +186,7 @@ export default function Home() {
               </div>
               <div className="ml-3">
                 <p className="text-sm font-medium text-green-800">
-                  Request submitted successfully! We'll process your document request shortly.
+                  Request submitted successfully! We will process your document request shortly.
                 </p>
               </div>
             </div>
