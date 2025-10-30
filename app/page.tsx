@@ -99,31 +99,51 @@ export default function Home() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+  
     // Validation
     const newErrors: FormErrors = {};
     if (!formData.employee) newErrors.employee = 'Employee is required';
     if (!formData.client) newErrors.client = 'Client is required';
     if (!formData.urgency) newErrors.urgency = 'Urgency is required';
     if (!formData.request.trim()) newErrors.request = 'Request description is required';
-    
+  
     setErrors(newErrors);
-    
+  
     if (Object.keys(newErrors).length > 0) {
       return;
     }
-
+  
     setIsSubmitting(true);
-    
+  
     try {
+      // 1. Insert request into Supabase and get the ID back
+      const { data: newRequest, error: dbError } = await supabase
+        .from('requests')
+        .insert({
+          employee_id: formData.employee,
+          client_id: formData.client?.id,
+          urgency_level: parseInt(formData.urgency),
+          raw_request: formData.request.trim(),
+          status: 'pending',
+        })
+        .select()
+        .single();
+    
+      if (dbError) {
+        console.error('Database error:', dbError);
+        throw new Error('Failed to create request in database');
+      }
+    
+      // 2. Send webhook to n8n WITH the request_id
       const payload = {
-        employee: formData.employee,
+        request_id: newRequest.id, // ← This is the critical addition
+        employee_id: formData.employee,
         client: formData.client,
-        urgency: parseInt(formData.urgency),
+        urgency_level: parseInt(formData.urgency),
         request: formData.request.trim(),
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
-
+    
       const response = await fetch(process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL!, {
         method: 'POST',
         headers: {
@@ -131,29 +151,30 @@ export default function Home() {
         },
         body: JSON.stringify(payload),
       });
-
+    
       if (!response.ok) {
-        throw new Error('Failed to submit request');
+        console.error('Webhook error:', response);
+        throw new Error('Failed to submit request to workflow');
       }
-
+  
       setIsSuccess(true);
       
-      // Clear form
+      // Reset form
       setFormData({
         employee: '',
         client: null,
         urgency: '',
         request: ''
       });
-      setClientSearch('');
-      setClientResults([]);
-      
+  
       // Hide success message after 5 seconds
-      setTimeout(() => setIsSuccess(false), 5000);
-      
+      setTimeout(() => {
+        setIsSuccess(false);
+      }, 5000);
+  
     } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('Failed to submit request. Please try again.');
+      console.error('Error submitting request:', error);
+      setErrors({ request: 'Failed to submit request. Please try again.' });
     } finally {
       setIsSubmitting(false);
     }
