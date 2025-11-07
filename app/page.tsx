@@ -136,7 +136,7 @@ export default function Home() {
     
       // 2. Send webhook to n8n WITH the request_id
       const payload = {
-        request_id: newRequest.id, // ← This is the critical addition
+        request_id: newRequest.id,
         employee_id: formData.employee,
         client: formData.client,
         urgency_level: parseInt(formData.urgency),
@@ -166,6 +166,7 @@ export default function Home() {
         urgency: '',
         request: ''
       });
+      setClientSearch('');
   
       // Hide success message after 5 seconds
       setTimeout(() => {
@@ -180,10 +181,11 @@ export default function Home() {
     }
   };
 
+  // UPDATED: Priority options without emojis
   const urgencyOptions = [
-    { value: '1', label: '🔴 Urgent I - Phone Call (24-48 hours)', color: 'text-red-600' },
-    { value: '2', label: '🟡 Urgent II - SMS (1-2 weeks)', color: 'text-yellow-600' },
-    { value: '3', label: '🟢 Urgent III - Email (2-3 weeks)', color: 'text-green-600' }
+    { value: '2', label: 'Standard (3 day follow-up)' },
+    { value: '1', label: 'High Priority (1 day follow-up)' },
+    { value: '3', label: 'Low Priority (7 day follow-up)' }
   ];
 
   const employees = [
@@ -193,11 +195,20 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">DocuQuest</h1>
+          {/* Logo */}
+          <div className="flex justify-center mb-4">
+            <img 
+              src="/logo.png" 
+              alt="DocuQuest Logo" 
+              className="h-12 w-auto"
+            />
+          </div>
+          
+          <h1 className="text-4xl font-bold mb-2 text-[#0066FF]">DocuQuest</h1>
           <p className="text-lg text-gray-600">Document Request Form</p>
         </div>
 
@@ -231,8 +242,8 @@ export default function Home() {
                 id="employee"
                 value={formData.employee}
                 onChange={(e) => setFormData(prev => ({ ...prev, employee: e.target.value }))}
-                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
-                  errors.employee ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                className={`w-full px-4 py-3 border-2 rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-[#0066FF] text-gray-900 transition-all ${
+                  errors.employee ? 'border-red-300 bg-red-50' : 'border-gray-200'
                 }`}
               >
                 <option value="">Select an employee</option>
@@ -264,8 +275,8 @@ export default function Home() {
                     }
                   }}
                   placeholder="Search for client by name or email..."
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
-                    errors.client ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                  className={`w-full px-4 py-3 border-2 rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-[#0066FF] text-gray-900 placeholder-gray-400 transition-all ${
+                    errors.client ? 'border-red-300 bg-red-50' : 'border-gray-200'
                   }`}
                 />
                 
@@ -297,20 +308,20 @@ export default function Home() {
               )}
             </div>
 
-            {/* Urgency Dropdown */}
+            {/* Priority Dropdown - UPDATED */}
             <div>
               <label htmlFor="urgency" className="block text-sm font-semibold text-gray-700 mb-2">
-                Urgency *
+                Priority Level *
               </label>
               <select
                 id="urgency"
                 value={formData.urgency}
                 onChange={(e) => setFormData(prev => ({ ...prev, urgency: e.target.value }))}
-                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
-                  errors.urgency ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                className={`w-full px-4 py-3 border-2 rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-[#0066FF] text-gray-900 transition-all ${
+                  errors.urgency ? 'border-red-300 bg-red-50' : 'border-gray-200'
                 }`}
               >
-                <option value="">Select urgency level</option>
+                <option value="">Select priority level</option>
                 {urgencyOptions.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
@@ -322,7 +333,7 @@ export default function Home() {
               )}
             </div>
 
-            {/* Request Textarea */}
+            {/* Request Textarea - UPDATED */}
             <div>
               <label htmlFor="request" className="block text-sm font-semibold text-gray-700 mb-2">
                 Document Request *
@@ -331,10 +342,10 @@ export default function Home() {
                 id="request"
                 value={formData.request}
                 onChange={(e) => setFormData(prev => ({ ...prev, request: e.target.value }))}
-                placeholder="Describe the documents you need in natural language..."
+                placeholder="Example: Need 2023 W-2 and last 3 bank statements"
                 rows={4}
-                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-none ${
-                  errors.request ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                className={`w-full px-4 py-3 border-2 rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-[#0066FF] text-gray-900 placeholder-gray-400 transition-all resize-none ${
+                  errors.request ? 'border-red-300 bg-red-50' : 'border-gray-200'
                 }`}
               />
               {errors.request && (
@@ -342,15 +353,15 @@ export default function Home() {
               )}
             </div>
 
-            {/* Submit Button */}
+            {/* Submit Button - UPDATED */}
             <div className="pt-4">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full py-3 px-6 rounded-lg font-semibold text-white transition-all duration-200 ${
+                className={`w-full py-4 px-6 rounded-lg font-semibold text-white transition-all duration-200 shadow-lg ${
                   isSubmitting
                     ? 'bg-gray-400 cursor-not-allowed'
-                    : 'bg-blue-600 hover:bg-blue-700 hover:shadow-lg transform hover:-translate-y-0.5'
+                    : 'bg-[#0066FF] hover:bg-[#0052CC] hover:shadow-xl transform hover:-translate-y-0.5'
                 }`}
               >
                 {isSubmitting ? (
