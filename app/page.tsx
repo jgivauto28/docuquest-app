@@ -194,23 +194,18 @@ export default function Home() {
     { value: 'EMP003', label: 'Sarah (EMP003)' }
   ];
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-2xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          {/* Logo */}
-          <div className="flex justify-center mb-4">
-            <img 
-              src="/logo.png" 
-              alt="DocuQuest Logo" 
-              className="h-12 w-auto"
-            />
-          </div>
-          
-          <h1 className="text-4xl font-bold mb-2 text-[#0066FF]">DocuQuest</h1>
-          <p className="text-lg text-gray-600">Document Request Form</p>
-        </div>
+  <div className="text-center mb-8">
+  {/* Logo */}
+  <div className="flex justify-center mb-4">
+    <img 
+      src="/logo.png" 
+      alt="DocuQuest Logo" 
+      className="h-28 w-auto"
+    />
+  </div>
+  
+  <p className="text-lg text-gray-600">Document Request Form</p>
+</div>
 
         {/* Success Message */}
         {isSuccess && (
