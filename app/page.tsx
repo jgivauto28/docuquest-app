@@ -204,7 +204,7 @@ export default function Home() {
             <img 
               src="/logo.png" 
               alt="DocuQuest Logo" 
-              className="h-26 w-auto"
+              className="h-50 w-auto"
             />
           </div>
           
