@@ -194,13 +194,14 @@ export default function Home() {
     { value: 'EMP003', label: 'Sarah (EMP003)' }
   ];
 
+  {/* Header */}
   <div className="text-center mb-8">
   {/* Logo */}
   <div className="flex justify-center mb-4">
     <img 
       src="/logo.png" 
       alt="DocuQuest Logo" 
-      className="h-28 w-auto"
+      className="h-26 w-auto"
     />
   </div>
   
