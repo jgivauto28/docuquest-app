@@ -40,6 +40,7 @@ export default function Home() {
   
   const clientDropdownRef = useRef<HTMLDivElement>(null);
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  
   // Debounced client search
   useEffect(() => {
     if (searchTimeoutRef.current) {
@@ -181,7 +182,6 @@ export default function Home() {
     }
   };
 
-  // UPDATED: Priority options without emojis
   const urgencyOptions = [
     { value: '2', label: 'Standard (3 day follow-up)' },
     { value: '1', label: 'High Priority (1 day follow-up)' },
@@ -194,19 +194,22 @@ export default function Home() {
     { value: 'EMP003', label: 'Sarah (EMP003)' }
   ];
 
-  {/* Header */}
-  <div className="text-center mb-8">
-  {/* Logo */}
-  <div className="flex justify-center mb-4">
-    <img 
-      src="/logo.png" 
-      alt="DocuQuest Logo" 
-      className="h-26 w-auto"
-    />
-  </div>
-  
-  <p className="text-lg text-gray-600">Document Request Form</p>
-</div>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-2xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-8">
+          {/* Logo */}
+          <div className="flex justify-center mb-4">
+            <img 
+              src="/logo.png" 
+              alt="DocuQuest Logo" 
+              className="h-26 w-auto"
+            />
+          </div>
+          
+          <p className="text-lg text-gray-600">Document Request Form</p>
+        </div>
 
         {/* Success Message */}
         {isSuccess && (
@@ -219,7 +222,7 @@ export default function Home() {
               </div>
               <div className="ml-3">
                 <p className="text-sm font-medium text-green-800">
-                {`Request submitted successfully! We will process your document request shortly.`}
+                  Request submitted successfully! We will process your document request shortly.
                 </p>
               </div>
             </div>
@@ -304,7 +307,7 @@ export default function Home() {
               )}
             </div>
 
-            {/* Priority Dropdown - UPDATED */}
+            {/* Priority Dropdown */}
             <div>
               <label htmlFor="urgency" className="block text-sm font-semibold text-gray-700 mb-2">
                 Priority Level *
@@ -329,7 +332,7 @@ export default function Home() {
               )}
             </div>
 
-            {/* Request Textarea - UPDATED */}
+            {/* Request Textarea */}
             <div>
               <label htmlFor="request" className="block text-sm font-semibold text-gray-700 mb-2">
                 Document Request *
@@ -349,7 +352,7 @@ export default function Home() {
               )}
             </div>
 
-            {/* Submit Button - UPDATED */}
+            {/* Submit Button */}
             <div className="pt-4">
               <button
                 type="submit"
